@@ -7,7 +7,7 @@ import 'style/components/styled_theme_switcher.dart';
 
 void main() {
   runApp(ThemeSwitcherWidget(
-      initialTheme: lightBlueTheme,
+      initialTheme: lightTheme,
       child: const MyApp(themeToken: MyThemeToken())));
 }
 
@@ -79,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     themeToken: widget.themeToken,
                     onPressed: () {
                       _incrementCounter();
-                      ThemeSwitcher.of(context).switchTheme(lightBlueTheme);
+                      ThemeSwitcher.of(context).switchTheme(lightTheme);
                     }),
                 StyledButton(
                     text: 'Theme 2',

@@ -4,8 +4,6 @@ import 'package:mix/mix.dart';
 
 import '../patterns/scale_effect.dart';
 
-
-
 class StyledButton extends StatelessWidget {
   final String text;
   final VoidCallback? onPressed;
@@ -24,9 +22,26 @@ class StyledButton extends StatelessWidget {
       onPress: onPressed,
       style: Style(
         $box.color.ref(themeToken.color.primary),
-        $box.padding(10),
+        $box.padding.all(10),
+        $box.border(
+          color:themeToken.color.secondary.resolve(context),
+          width: 2,
+          style: BorderStyle.solid,
+          strokeAlign: 0.5,
+        ),
         $box.borderRadius.topRight(themeToken.radius.medium.resolve(context).x),
-        $box.borderRadius.bottomLeft(themeToken.radius.medium.resolve(context).x),
+        $box.borderRadius
+            .bottomLeft(themeToken.radius.medium.resolve(context).x),
+        $on.hover(
+            $box.borderRadius
+                .bottomRight(themeToken.radius.medium.resolve(context).x),
+            $box.borderRadius
+                .topLeft(themeToken.radius.medium.resolve(context).x),
+            $box.borderRadius.topRight(0),
+            $box.borderRadius.bottomLeft(0),
+           ),
+
+
         scaleEffect(),
       ).animate(
         duration: const Duration(milliseconds: 50),
