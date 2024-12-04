@@ -38,6 +38,7 @@ class _ThemeSwitcherWidgetState extends State<ThemeSwitcherWidget> {
 
   @override
   void initState() {
+    super.initState();
     themeData = widget.initialTheme;
   }
 

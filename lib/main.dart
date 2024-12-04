@@ -1,45 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widgets_catalog/style/components/styled_button.dart';
+import 'package:flutter_widgets_catalog/style/theme/theme.dart';
+import 'package:flutter_widgets_catalog/style/theme/theme_token.dart';
 import 'package:mix/mix.dart';
-import 'package:flutter_widgets_catalog/style/themes.dart';
 
 import 'style/components/styled_theme_switcher.dart';
 
+const theme = MaterialTheme();
+
 void main() {
   runApp(ThemeSwitcherWidget(
-      initialTheme: lightTheme,
-      child: const MyApp(themeToken: MyThemeToken())));
+      initialTheme: theme.mixThemeDataLight(), child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
-  final MyThemeToken themeToken;
-  const MyApp({required this.themeToken, super.key});
+  const MyApp({super.key});
   static const String title = 'Flutter Styled Widgets Catalog';
-
   @override
   Widget build(BuildContext context) {
-    final themeData = ThemeSwitcher.of(context).themeData;
     return MixTheme(
-        data: themeData,
-        child: MaterialApp(
+        data: ThemeSwitcher.of(context).themeData,
+        child: const MaterialApp(
           title: title,
-          home: MyHomePage(title: title, themeToken: themeToken),
+          home: MyHomePage(title: title),
         ));
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title, required this.themeToken});
-  final MyThemeToken themeToken;
+  const MyHomePage({super.key, required this.title});
   final String title;
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-
   void _incrementCounter() {
     setState(() {
       _counter++;
@@ -48,54 +44,67 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    MixThemeData themeData = MixTheme.of(context);
     return Scaffold(
+      backgroundColor: $themeToken.color.background.resolve(context),
       appBar: AppBar(
-        backgroundColor: themeData.colors[widget.themeToken.color.primary],
-        title: Text(widget.title),
+        backgroundColor: $themeToken.color.surface.resolve(context),
+        title: StyledText(widget.title,
+            style: Style($text.style
+                .color($themeToken.color.onSurface.resolve(context)))),
       ),
-      body: FlexBox(
-        direction: Axis.vertical,
+      body: SingleChildScrollView(
+          child: VBox(
+        style: Style($box.color($themeToken.color.background.resolve(context)),
+            $text.style.color($themeToken.color.onBackground.resolve(context))),
         children: [
           StyledText(
             style: Style(
-              $text.style.ref(widget.themeToken.textStyle.headline1),
-            ),
-            'headline1: You have pushed the button this many times:',
+                $text.style.ref($themeToken.textStyle.headline1),
+                $text.style
+                    .color($themeToken.color.onBackground.resolve(context))),
+            'headline1: $_counter',
           ),
           StyledText(
-              style:
-                  Style($text.style.ref(widget.themeToken.textStyle.headline2)),
+              style: Style(
+                  $text.style.ref($themeToken.textStyle.headline2),
+                  $text.style
+                      .color($themeToken.color.onBackground.resolve(context))),
               'headline2: $_counter'),
           StyledText(
-              style: Style($text.style.ref(widget.themeToken.textStyle.body)),
+              style: Style(
+                  $text.style.ref($themeToken.textStyle.bodyText1),
+                  $text.style
+                      .color($themeToken.color.onBackground.resolve(context))),
               'Body text'),
           StyledFlex(
-              style: Style($flex.gap.ref(widget.themeToken.space.medium)),
+              style: Style($flex.gap.ref($themeToken.space.medium)),
               direction: Axis.horizontal,
               children: [
                 StyledButton(
-                    text: 'Theme 1',
-                    themeToken: widget.themeToken,
+                    text: 'Tema claro',
+                    themeToken: $themeToken,
                     onPressed: () {
                       _incrementCounter();
-                      ThemeSwitcher.of(context).switchTheme(lightTheme);
+                      ThemeSwitcher.of(context)
+                          .switchTheme(theme.mixThemeDataLight());
                     }),
                 StyledButton(
-                    text: 'Theme 2',
-                    themeToken: widget.themeToken,
+                    text: 'Tema oscuro',
+                    themeToken: $themeToken,
                     onPressed: () {
                       _incrementCounter();
-                      ThemeSwitcher.of(context).switchTheme(darkPurpleTheme);
+                      ThemeSwitcher.of(context)
+                          .switchTheme(theme.mixThemeDataDark());
                     }),
               ])
         ],
-      ),
+      )),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: themeData.colors[widget.themeToken.color.primary],
+        backgroundColor: $themeToken.color.primary.resolve(context),
+
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        child:  Icon(Icons.add,color: $themeToken.color.onPrimary.resolve(context)),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
