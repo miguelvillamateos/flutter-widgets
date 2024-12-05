@@ -14,6 +14,8 @@ class ThemeToken {
 class ThemeColorToken {
   const ThemeColorToken();
   final primary = const ColorToken('color.primary');
+  final primaryContainer = const ColorToken('color.primary.container');
+  final onPrimaryContainer = const ColorToken('color.on.primary.container');
   final secondary = const ColorToken('color.secondary');
   final tertiary = const ColorToken('color.tertiary');
   final surface = const ColorToken('color.surface');
@@ -25,6 +27,8 @@ class ThemeColorToken {
   final onSurface = const ColorToken('color.on.surface');
   final onBackground = const ColorToken('color.on.background');
   final onError = const ColorToken('color.on.error');
+
+
 }
 
 class ThemeTextStyleToken {

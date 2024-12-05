@@ -432,7 +432,7 @@ packages:
     source: hosted
     version: "2.0.0"
   mix:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: mix
       sha256: "3e848f5318f8b69b4c02ba7d7c42084a71ad416742278f7514501257da961106"

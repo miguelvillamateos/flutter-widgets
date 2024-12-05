@@ -20,7 +20,7 @@ class StyledButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double dist = 10;
+    double dist = themeToken.space.medium();
     return PressableBox(
       onPress: onPressed,
       style: Style(

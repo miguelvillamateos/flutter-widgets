@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_widgets_catalog/style/theme/mix_material_theme.dart';
 import 'package:mix/mix.dart';
 
 class ThemeSwitcher extends InheritedWidget {
-  final _ThemeSwitcherWidgetState data;
+  final ThemeSwitcherWidgetState data;
 
   const ThemeSwitcher({
     super.key,
@@ -10,7 +11,7 @@ class ThemeSwitcher extends InheritedWidget {
     required super.child,
   });
 
-  static _ThemeSwitcherWidgetState of(BuildContext context) {
+  static ThemeSwitcherWidgetState of(BuildContext context) {
     return (context.dependOnInheritedWidgetOfExactType<ThemeSwitcher>()
             as ThemeSwitcher)
         .data;
@@ -23,23 +24,34 @@ class ThemeSwitcher extends InheritedWidget {
 }
 
 class ThemeSwitcherWidget extends StatefulWidget {
-  final MixThemeData initialTheme;
+  final MixMaterialTheme mixMaterialTheme;
+  final Brightness brightness;
+
+
   final Widget child;
 
   const ThemeSwitcherWidget(
-      {super.key, required this.initialTheme, required this.child});
+      {super.key, required this.mixMaterialTheme, required this.brightness,required this.child});
 
   @override
-  _ThemeSwitcherWidgetState createState() => _ThemeSwitcherWidgetState();
+  ThemeSwitcherWidgetState createState() => ThemeSwitcherWidgetState(brightness);
 }
 
-class _ThemeSwitcherWidgetState extends State<ThemeSwitcherWidget> {
+class ThemeSwitcherWidgetState extends State<ThemeSwitcherWidget> {
   late MixThemeData themeData;
+  Brightness brightness;
+
+  ThemeSwitcherWidgetState(this.brightness);
 
   @override
   void initState() {
     super.initState();
-    themeData = widget.initialTheme;
+    themeData = brightness == Brightness.light ? widget.mixMaterialTheme.light():widget.mixMaterialTheme.dark();
+  }
+
+  void switchBrightness(Brightness brightness)
+  {
+    switchTheme(brightness == Brightness.light ? widget.mixMaterialTheme.light():widget.mixMaterialTheme.dark());
   }
 
   void switchTheme(MixThemeData theme) {

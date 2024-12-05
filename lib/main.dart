@@ -1,26 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widgets_catalog/style/components/styled_button.dart';
+import 'package:flutter_widgets_catalog/style/components/styled_card.dart';
+import 'package:flutter_widgets_catalog/style/theme/mix_material_theme.dart';
 import 'package:flutter_widgets_catalog/style/theme/theme.dart';
 import 'package:flutter_widgets_catalog/style/theme/theme_token.dart';
 import 'package:mix/mix.dart';
 
 import 'style/components/styled_theme_switcher.dart';
 
-const theme = MaterialTheme();
-
 void main() {
-  runApp(ThemeSwitcherWidget(
-      initialTheme: theme.mixThemeDataLight(), child: const MyApp()));
+  runApp(const MyAppSwitcher());
+}
+
+class MyAppSwitcher extends StatelessWidget {
+  const MyAppSwitcher({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final TextTheme textTheme = createTextTheme(context, "Roboto", "Roboto");
+    final MaterialTheme materialTheme = MaterialTheme(textTheme);
+    final MixMaterialTheme mixMaterialtheme =
+        MixMaterialTheme(theme: materialTheme);
+    final brightness = View.of(context).platformDispatcher.platformBrightness;
+    return ThemeSwitcherWidget(
+        mixMaterialTheme: mixMaterialtheme,
+        brightness: brightness,
+        child: MyApp());
+  }
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
   static const String title = 'Flutter Styled Widgets Catalog';
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MixTheme(
         data: ThemeSwitcher.of(context).themeData,
-        child: const MaterialApp(
+        child: MaterialApp(
           title: title,
           home: MyHomePage(title: title),
         ));
@@ -86,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: () {
                       _incrementCounter();
                       ThemeSwitcher.of(context)
-                          .switchTheme(theme.mixThemeDataLight());
+                          .switchBrightness(Brightness.light);
                     }),
                 StyledButton(
                     text: 'Tema oscuro',
@@ -94,17 +111,22 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: () {
                       _incrementCounter();
                       ThemeSwitcher.of(context)
-                          .switchTheme(theme.mixThemeDataDark());
+                          .switchBrightness(Brightness.dark);
                     }),
-              ])
+              ]),
+          StyledCard(
+            title: 'Título',
+            subTitle: "Subtítulo",
+            themeToken: $themeToken,
+          )
         ],
       )),
       floatingActionButton: FloatingActionButton(
         backgroundColor: $themeToken.color.primary.resolve(context),
-
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child:  Icon(Icons.add,color: $themeToken.color.onPrimary.resolve(context)),
+        child: Icon(Icons.add,
+            color: $themeToken.color.onPrimary.resolve(context)),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
